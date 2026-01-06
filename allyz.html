@@ -1,0 +1,2890 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gen 08z — Allyz Arcade</title>
+    <style>
+      :root {
+        --bg1: #ffb3d9;
+        --bg2: #ffd6ec;
+        --pink: #ff4fa3;
+        --pink2: #ff86c8;
+        --hot: #ff2d8f;
+        --purple: #7c4dff;
+        --mint: #2ef2c3;
+        --lime: #b7ff4a;
+        --ink: #2b1b24;
+        --panel: #ffffffcc;
+
+        --shadow: 0 18px 45px rgba(41, 9, 26, 0.25);
+        --shadow2: 0 10px 25px rgba(41, 9, 26, 0.18);
+        --radius: 22px;
+        --radius2: 30px;
+
+        --pixel: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        --round: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--round);
+        color: var(--ink);
+        background: radial-gradient(
+            1200px 700px at 20% 10%,
+            #fff 0%,
+            rgba(255, 255, 255, 0) 55%
+          ),
+          radial-gradient(
+            900px 600px at 90% 25%,
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 0) 55%
+          ),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        overflow-x: hidden;
+      }
+
+      .sparkles::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(
+            circle at 12% 18%,
+            rgba(255, 255, 255, 0.9) 0 2px,
+            transparent 3px
+          ),
+          radial-gradient(
+            circle at 28% 70%,
+            rgba(255, 255, 255, 0.8) 0 2px,
+            transparent 3px
+          ),
+          radial-gradient(
+            circle at 80% 30%,
+            rgba(255, 255, 255, 0.8) 0 2px,
+            transparent 3px
+          ),
+          radial-gradient(
+            circle at 62% 82%,
+            rgba(255, 255, 255, 0.75) 0 2px,
+            transparent 3px
+          ),
+          radial-gradient(
+            circle at 44% 36%,
+            rgba(255, 255, 255, 0.7) 0 1px,
+            transparent 3px
+          ),
+          radial-gradient(
+            circle at 92% 74%,
+            rgba(255, 255, 255, 0.7) 0 1px,
+            transparent 3px
+          );
+        opacity: 0.55;
+        animation: twinkle 4s ease-in-out infinite alternate;
+        filter: blur(0.2px);
+      }
+      @keyframes twinkle {
+        from {
+          opacity: 0.35;
+        }
+        to {
+          opacity: 0.7;
+        }
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 18px 14px 60px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: var(--radius2);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.75),
+          rgba(255, 255, 255, 0.35)
+        );
+        box-shadow: var(--shadow2);
+        border: 2px solid rgba(255, 118, 191, 0.35);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 10px;
+        z-index: 30;
+      }
+      .brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: radial-gradient(
+            circle at 30% 35%,
+            #fff 0 10px,
+            rgba(255, 255, 255, 0) 12px
+          ),
+          linear-gradient(135deg, var(--pink), var(--purple));
+        box-shadow: 0 10px 18px rgba(255, 79, 163, 0.35);
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        position: relative;
+      }
+      .logo::after {
+        content: "08L";
+        position: absolute;
+        inset: auto 0 6px 0;
+        text-align: center;
+        font: 700 12px/1 var(--pixel);
+        color: rgba(255, 255, 255, 0.95);
+        text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.2px;
+      }
+      .brand small {
+        display: block;
+        margin-top: 2px;
+        opacity: 0.75;
+        font-size: 12px;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 900;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.85),
+          rgba(255, 255, 255, 0.45)
+        );
+        border: 1px solid rgba(255, 79, 163, 0.38);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.12s ease, filter 0.12s ease;
+        user-select: none;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.02);
+      }
+      .btn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .btn.primary {
+        color: #fff;
+        background: linear-gradient(135deg, var(--hot), #ff7ac7);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 16px 30px rgba(255, 45, 143, 0.25);
+      }
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.4);
+      }
+      .btn.small {
+        padding: 8px 10px;
+        font-size: 11px;
+      }
+
+      .screen {
+        margin-top: 16px;
+        border-radius: var(--radius2);
+        border: 2px solid rgba(255, 118, 191, 0.35);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.55),
+          rgba(255, 255, 255, 0.22)
+        );
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        min-height: 72vh;
+      }
+      .screenHeader {
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 118, 191, 0.25);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(255, 255, 255, 0.35)
+        );
+        backdrop-filter: blur(10px);
+      }
+      .screenHeader h2 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+      }
+      .hud {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .meter {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 118, 191, 0.35);
+        font: 900 11px/1 var(--pixel);
+      }
+      .content {
+        padding: 16px;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+        animation: popin 0.18s ease-out;
+      }
+      @keyframes popin {
+        from {
+          transform: scale(0.985);
+          opacity: 0.2;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 900px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.65);
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: var(--shadow2);
+        overflow: hidden;
+        position: relative;
+      }
+      .card .inner {
+        padding: 16px;
+      }
+      .bigTitle {
+        font-size: 34px;
+        line-height: 1.05;
+        margin: 4px 0 10px;
+      }
+      .sub {
+        margin: 0;
+        opacity: 0.86;
+        font-weight: 800;
+      }
+      .tagrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .tag {
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px dashed rgba(255, 79, 163, 0.6);
+        font: 1000 11px/1 var(--pixel);
+      }
+      .dialog {
+        margin-top: 10px;
+        padding: 12px 12px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 118, 191, 0.35);
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.08);
+        font-size: 13px;
+        line-height: 1.55;
+        font-weight: 800;
+      }
+      .dialog b {
+        color: #b1005a;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 999;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.78);
+        color: #fff;
+        font: 900 11px/1 var(--pixel);
+        letter-spacing: 0.4px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-4px);
+      }
+
+      /* ===== JOIN (simple) ===== */
+      .reveal {
+        margin-top: 14px;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.68);
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: var(--shadow2);
+        overflow: hidden;
+      }
+      .revealHeader {
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 143, 0.16),
+          rgba(124, 77, 255, 0.1)
+        );
+        border-bottom: 1px solid rgba(255, 118, 191, 0.22);
+      }
+      .revealHeader b {
+        font: 1000 12px/1 var(--pixel);
+        letter-spacing: 0.6px;
+      }
+      .revealBody {
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+      .mini {
+        font: 900 11px/1.5 var(--pixel);
+        opacity: 0.95;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 118, 191, 0.25);
+        padding: 10px 12px;
+        border-radius: 16px;
+      }
+      .linkRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .a {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        font: 1000 12px/1 var(--pixel);
+        color: #fff;
+        background: linear-gradient(135deg, var(--hot), #ff7ac7);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 14px 25px rgba(255, 45, 143, 0.22);
+      }
+
+      /* ===== DRESS-UP (IMAGE LAYER / PAPER DOLL) ===== */
+      .dollStack {
+        position: relative;
+        width: 310px;
+        height: 410px;
+        filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.14));
+        transform: translateY(-10px);
+      }
+
+      /* semua layer jadi absolute biar numpuk */
+      .dollStack img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: auto;
+        pointer-events: none;
+        user-select: none;
+
+        /* penting: bikin z-index jalan stabil */
+        display: block;
+      }
+
+      /* ===== URUTAN LAYER (Z-INDEX) ===== */
+      /* rambut belakang paling belakang */
+      #layerHairBack {
+        z-index: 1;
+      }
+
+      /* BODY (kepala nyatu) harus di atas hairBack */
+      #layerBody {
+        z-index: 2;
+      }
+
+      /* baju & sepatu di atas body */
+      #layerCloth {
+        z-index: 3;
+      }
+      #layerShoe {
+        z-index: 4;
+      }
+
+      /* muka di atas baju (kalau baju nutupin muka, biar muka tetep keliatan) */
+      #layerEyes {
+        z-index: 5;
+      }
+      #layerMouth {
+        z-index: 6;
+      }
+
+      /* rambut depan paling depan */
+      #layerHairFront {
+        z-index: 7;
+      }
+
+      /* ===== THUMBNAIL ITEM ===== */
+      .item .icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .item .icon .noimg {
+        font: 1000 11px/1 var(--pixel);
+        opacity: 0.7;
+      }
+
+      .dressWrap {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 14px;
+      }
+      @media (max-width: 980px) {
+        .dressWrap {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .dressPanel {
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.72);
+        border: 2px solid rgba(255, 118, 191, 0.25);
+        box-shadow: var(--shadow2);
+        overflow: hidden;
+      }
+      .dressPanel .head {
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 143, 0.14),
+          rgba(124, 77, 255, 0.08)
+        );
+        border-bottom: 1px solid rgba(255, 118, 191, 0.22);
+        font: 1000 12px/1 var(--pixel);
+        letter-spacing: 0.6px;
+      }
+      .dressPanel .body {
+        padding: 14px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .formRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 520px) {
+        .formRow {
+          grid-template-columns: 1fr;
+        }
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+        font: 900 11px/1.2 var(--pixel);
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 2px solid rgba(255, 118, 191, 0.2);
+        background: rgba(255, 255, 255, 0.75);
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.06);
+        outline: none;
+        font: 900 12px/1 var(--pixel);
+      }
+      .field input::placeholder {
+        opacity: 0.6;
+      }
+      .mini {
+        font: 900 11px/1.5 var(--pixel);
+        opacity: 0.95;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 118, 191, 0.25);
+        padding: 10px 12px;
+        border-radius: 16px;
+      }
+
+      .dressGameScene {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 900px) {
+        .dressGameScene {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(255, 118, 191, 0.28);
+        font: 1000 11px/1 var(--pixel);
+        box-shadow: 0 12px 18px rgba(0, 0, 0, 0.08);
+        z-index: 5;
+      }
+      .badge.right {
+        left: auto;
+        right: 10px;
+      }
+
+      .dropHint {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        font: 900 11px/1.25 var(--pixel);
+        padding: 10px 12px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px dashed rgba(255, 118, 191, 0.35);
+        box-shadow: 0 12px 18px rgba(0, 0, 0, 0.06);
+        z-index: 5;
+      }
+
+      /* LEFT closet */
+      .closetWrap {
+        border-radius: 22px;
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.55),
+          rgba(255, 134, 200, 0.12)
+        );
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+        padding: 12px;
+        position: relative;
+        overflow: hidden;
+      }
+      .closetTitle {
+        font: 1000 12px/1 var(--pixel);
+        letter-spacing: 0.6px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 118, 191, 0.22);
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+      .closet {
+        height: 420px;
+        border-radius: 22px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 72, 170, 0.35),
+          rgba(255, 255, 255, 0.18)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.25);
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.22),
+          inset 0 -28px 60px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .closetDoor {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.22),
+          rgba(255, 118, 191, 0.18)
+        );
+        border: 1px solid rgba(255, 118, 191, 0.25);
+        opacity: 0.35;
+      }
+      .closetDoor.left {
+        left: 0;
+        border-right: 1px solid rgba(255, 118, 191, 0.25);
+      }
+      .closetDoor.right {
+        left: 50%;
+      }
+      .closetInner {
+        position: absolute;
+        inset: 14px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 10px;
+        overflow: auto;
+      }
+      .shelfLabel {
+        font: 1000 11px/1 var(--pixel);
+        letter-spacing: 0.6px;
+        color: rgba(27, 18, 32, 0.85);
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+        margin: 4px 0 8px;
+      }
+      .divider {
+        height: 8px;
+        margin: 10px 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid rgba(255, 118, 191, 0.18);
+      }
+      .shelfGrid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      @media (max-width: 520px) {
+        .shelfGrid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .item {
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 2px solid rgba(255, 118, 191, 0.18);
+        box-shadow: 0 12px 18px rgba(0, 0, 0, 0.08);
+        padding: 10px;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+      }
+      .item:hover {
+        transform: translateY(-2px);
+      }
+      .item:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .item.on {
+        outline: 3px solid rgba(46, 242, 195, 0.55);
+        box-shadow: 0 0 0 6px rgba(46, 242, 195, 0.12),
+          0 18px 28px rgba(0, 0, 0, 0.12);
+      }
+      .item .icon {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 143, 0.1),
+          rgba(124, 77, 255, 0.06)
+        );
+        border: 1px solid rgba(255, 118, 191, 0.16);
+        overflow: hidden;
+      }
+      .item .name {
+        margin-top: 8px;
+        font: 1000 10px/1.2 var(--pixel);
+        opacity: 0.95;
+        text-align: center;
+      }
+
+      /* RIGHT doll area */
+      .dollArea {
+        border-radius: 22px;
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        background: radial-gradient(
+            circle at 30% 20%,
+            rgba(255, 255, 255, 0.95),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 70% 40%,
+            rgba(124, 77, 255, 0.12),
+            transparent 60%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(255, 134, 200, 0.22),
+            rgba(255, 255, 255, 0.08)
+          );
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+        position: relative;
+        overflow: hidden;
+        min-height: 420px;
+      }
+
+      .dollStage2 {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding-top: 34px;
+      }
+      .dollPlatform {
+        position: absolute;
+        bottom: 70px;
+        width: 220px;
+        height: 70px;
+        border-radius: 999px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.55),
+          rgba(255, 45, 143, 0.18)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        box-shadow: inset 0 18px 28px rgba(255, 255, 255, 0.25),
+          0 18px 28px rgba(0, 0, 0, 0.1);
+        transform: perspective(700px) rotateX(18deg);
+      }
+      .dollFrame2 {
+        width: 320px;
+        height: 420px;
+        display: grid;
+        place-items: center;
+      }
+      .svgChar {
+        width: 310px;
+        height: 410px;
+        filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.14));
+        transform: translateY(-10px);
+      }
+      .actionRow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .actionRow .btn {
+        flex: 1;
+        min-width: 140px;
+      }
+
+      /* ===== RULES (ringkas) ===== */
+      .footer {
+        margin-top: 14px;
+        padding: 14px 16px;
+        border-radius: var(--radius2);
+        background: rgba(255, 255, 255, 0.55);
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: var(--shadow2);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 12px;
+        font-weight: 900;
+        opacity: 0.9;
+      }
+      .footer code {
+        font-family: var(--pixel);
+        font-weight: 1000;
+      }
+
+      /* =======================================================
+       GACHA STREET 3D (inspired layout — original assets)
+       ======================================================= */
+
+      .streetWrap {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 14px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .streetWrap {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .arcade3d {
+        position: relative;
+        border-radius: 26px;
+        padding: 18px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.55),
+          rgba(255, 255, 255, 0.22)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.34);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+
+        perspective: 900px;
+      }
+
+      .arcadeTopMarquee {
+        border-radius: 20px;
+        padding: 12px 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(255, 255, 255, 0.38)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .marqueeSmall {
+        display: inline-block;
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.75);
+        color: #b7ffea;
+        font: 1000 11px/1 var(--pixel);
+        letter-spacing: 0.6px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: inset 0 0 0 2px rgba(46, 242, 195, 0.12);
+      }
+      .marqueeTitle {
+        margin: 10px 0 0;
+        font: 1000 26px/1 var(--pixel);
+        letter-spacing: 0.8px;
+        color: rgba(255, 255, 255, 0.92);
+        text-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+        padding: 10px 12px;
+        border-radius: 18px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 143, 0.75),
+          rgba(124, 77, 255, 0.55)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 18px 30px rgba(255, 45, 143, 0.14);
+      }
+
+      /* mascot row */
+      .mascotRow {
+        margin-top: 14px;
+        border-radius: 22px;
+        padding: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.55),
+          rgba(255, 255, 255, 0.18)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08);
+        transform: rotateX(6deg);
+        transform-origin: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .mascots {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .m {
+        width: 78px;
+        height: 72px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 2px solid rgba(255, 118, 191, 0.18);
+        box-shadow: 0 14px 22px rgba(0, 0, 0, 0.08);
+        display: grid;
+        place-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .m svg {
+        width: 92%;
+        height: 92%;
+        display: block;
+      }
+      .m::after {
+        content: "";
+        position: absolute;
+        inset: -30px -30px auto auto;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.85),
+          transparent 60%
+        );
+        transform: rotate(25deg);
+        opacity: 0.75;
+        pointer-events: none;
+      }
+
+      /* 3D machine */
+      .machine3d {
+        margin-top: 14px;
+        border-radius: 26px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.55),
+          rgba(255, 255, 255, 0.16)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: 0 22px 40px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+
+        transform: rotateX(8deg);
+        transform-origin: center top;
+      }
+
+      .machineGlass3d {
+        position: relative;
+        height: 320px;
+        background: radial-gradient(
+            circle at 20% 25%,
+            rgba(255, 255, 255, 0.8),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 80% 35%,
+            rgba(255, 255, 255, 0.7),
+            transparent 60%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(255, 134, 200, 0.18),
+            rgba(255, 255, 255, 0.06)
+          );
+        border-bottom: 2px solid rgba(255, 118, 191, 0.22);
+      }
+
+      .glassFrame {
+        position: absolute;
+        inset: 14px;
+        border-radius: 22px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.42),
+          rgba(255, 255, 255, 0.08)
+        );
+        border: 2px solid rgba(255, 255, 255, 0.58);
+        box-shadow: inset 0 0 0 2px rgba(255, 118, 191, 0.14),
+          inset 0 -18px 40px rgba(255, 79, 163, 0.08);
+        overflow: hidden;
+      }
+      .glassShine {
+        position: absolute;
+        inset: -40px auto auto -40px;
+        width: 180px;
+        height: 240px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.65),
+          rgba(255, 255, 255, 0)
+        );
+        transform: rotate(18deg);
+        opacity: 0.55;
+        pointer-events: none;
+      }
+
+      /* prizes (capsules) */
+      .capsules {
+        position: absolute;
+        inset: 0;
+        padding: 18px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        align-content: end;
+        opacity: 0.95;
+      }
+      .cap {
+        height: 52px;
+        border-radius: 999px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.85),
+          rgba(255, 255, 255, 0.55)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        box-shadow: 0 14px 18px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        transform: rotate(var(--r, 0deg));
+      }
+      .cap::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 25%,
+          rgba(255, 255, 255, 0.85),
+          transparent 55%
+        );
+        opacity: 0.85;
+      }
+      .cap i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-style: normal;
+        font: 1000 11px/1 var(--pixel);
+        opacity: 0.75;
+      }
+      .cap b {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font: 1000 14px/1 var(--pixel);
+      }
+
+      /* claw rig */
+      .rail3d {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        top: 18px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.28);
+        box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.12);
+      }
+      .clawRig3d {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 240px;
+        pointer-events: none;
+      }
+      .clawHead3d {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .rope3d {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 7px;
+        height: 90px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.42),
+          rgba(0, 0, 0, 0.14)
+        );
+        border-radius: 999px;
+      }
+      .claw3d {
+        position: absolute;
+        left: 50%;
+        top: 74px;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 120px;
+        filter: drop-shadow(0 16px 12px rgba(0, 0, 0, 0.18));
+      }
+      .claw3d .hub {
+        position: absolute;
+        left: 50%;
+        top: 16px;
+        width: 40px;
+        height: 40px;
+        transform: translateX(-50%);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #f0f3ff, #cfd8ff);
+        border: 2px solid rgba(124, 77, 255, 0.22);
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.1);
+      }
+      .claw3d .arm {
+        position: absolute;
+        width: 16px;
+        height: 64px;
+        background: linear-gradient(180deg, #f0f3ff, #cfd8ff);
+        border: 2px solid rgba(124, 77, 255, 0.18);
+        border-radius: 10px;
+        top: 44px;
+        left: 50%;
+        transform-origin: top center;
+      }
+      .claw3d .arm.a1 {
+        transform: translateX(-44px) rotate(28deg);
+      }
+      .claw3d .arm.a2 {
+        transform: translateX(28px) rotate(-28deg);
+      }
+
+      .clawRig3d.dropping .rope3d {
+        animation: ropeDown3d 1.1s ease-in-out forwards;
+      }
+      .clawRig3d.rising .rope3d {
+        animation: ropeUp3d 1.1s ease-in-out forwards;
+      }
+      .clawRig3d.grab .arm.a1 {
+        animation: grabA1 0.45s ease-in-out forwards;
+      }
+      .clawRig3d.grab .arm.a2 {
+        animation: grabA2 0.45s ease-in-out forwards;
+      }
+
+      @keyframes ropeDown3d {
+        from {
+          height: 90px;
+        }
+        to {
+          height: 175px;
+        }
+      }
+      @keyframes ropeUp3d {
+        from {
+          height: 175px;
+        }
+        to {
+          height: 90px;
+        }
+      }
+      @keyframes grabA1 {
+        from {
+          transform: translateX(-44px) rotate(28deg);
+        }
+        to {
+          transform: translateX(-44px) rotate(10deg);
+        }
+      }
+      @keyframes grabA2 {
+        from {
+          transform: translateX(28px) rotate(-28deg);
+        }
+        to {
+          transform: translateX(28px) rotate(-10deg);
+        }
+      }
+
+      /* control panel */
+      .panel3d {
+        position: relative;
+        padding: 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.65),
+          rgba(255, 255, 255, 0.25)
+        );
+        border-top: 2px solid rgba(255, 118, 191, 0.2);
+      }
+      .panelGrid {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 1fr;
+        gap: 12px;
+        align-items: stretch;
+      }
+      @media (max-width: 700px) {
+        .panelGrid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .panelBox {
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.1),
+          inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+        padding: 12px;
+        position: relative;
+        overflow: hidden;
+      }
+      .panelBox::after {
+        content: "";
+        position: absolute;
+        inset: -40px -40px auto auto;
+        width: 140px;
+        height: 140px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.85),
+          transparent 60%
+        );
+        transform: rotate(22deg);
+        opacity: 0.45;
+        pointer-events: none;
+      }
+
+      .btnRow3 {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        padding-top: 6px;
+      }
+      .circleBtn {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 2px solid rgba(0, 0, 0, 0.12);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.85),
+          rgba(255, 255, 255, 0.55)
+        );
+        box-shadow: 0 16px 20px rgba(0, 0, 0, 0.1),
+          inset 0 -8px 14px rgba(0, 0, 0, 0.06);
+        display: grid;
+        place-items: center;
+        font: 1000 12px/1 var(--pixel);
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.12s ease;
+      }
+      .circleBtn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .circleBtn.pink {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 134, 200, 0.85),
+          rgba(255, 45, 143, 0.45)
+        );
+        color: rgba(255, 255, 255, 0.95);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+
+      .joystick3d {
+        height: 100%;
+        display: grid;
+        place-items: center;
+        gap: 10px;
+      }
+      .stickBase {
+        width: 120px;
+        height: 70px;
+        border-radius: 22px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0.52)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        box-shadow: inset 0 -10px 18px rgba(0, 0, 0, 0.06),
+          0 18px 24px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .stick {
+        position: absolute;
+        left: 50%;
+        top: 12px;
+        transform: translateX(-50%);
+        width: 16px;
+        height: 34px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.75),
+          rgba(0, 0, 0, 0.35)
+        );
+        border-radius: 999px;
+        box-shadow: 0 12px 16px rgba(0, 0, 0, 0.16);
+      }
+      .knob {
+        position: absolute;
+        left: 50%;
+        top: -10px;
+        transform: translateX(-50%);
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 134, 200, 0.95),
+          rgba(255, 45, 143, 0.55)
+        );
+        border: 2px solid rgba(255, 255, 255, 0.32);
+        box-shadow: 0 18px 18px rgba(255, 45, 143, 0.16);
+      }
+
+      .coinSide {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        height: 100%;
+      }
+      .slot {
+        border-radius: 18px;
+        background: rgba(0, 0, 0, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: inset 0 0 0 2px rgba(46, 242, 195, 0.12);
+        padding: 10px 12px;
+        color: #a5ffdb;
+        font: 1000 11px/1.4 var(--pixel);
+        letter-spacing: 0.6px;
+        min-height: 64px;
+      }
+      .playBtn {
+        width: 100%;
+        border-radius: 20px;
+        padding: 14px 14px;
+        cursor: pointer;
+        border: 2px solid rgba(255, 255, 255, 0.34);
+        background: linear-gradient(135deg, var(--hot), #ff7ac7);
+        color: #fff;
+        font: 1000 12px/1 var(--pixel);
+        letter-spacing: 0.8px;
+        box-shadow: 0 22px 32px rgba(255, 45, 143, 0.22),
+          inset 0 -10px 18px rgba(0, 0, 0, 0.1);
+        transition: transform 0.12s ease, filter 0.12s ease;
+        user-select: none;
+      }
+      .playBtn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .playBtn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* ticket (paper) anim */
+      .ticketBay {
+        position: absolute;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        width: 280px;
+        height: 0px;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .ticket {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%) translateY(20px) rotateX(40deg);
+        width: 280px;
+        border-radius: 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.78)
+        );
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: 0 24px 40px rgba(0, 0, 0, 0.16),
+          inset 0 0 0 2px rgba(255, 255, 255, 0.22);
+        opacity: 0;
+        overflow: hidden;
+      }
+      .ticket .tHead {
+        padding: 10px 12px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 143, 0.2),
+          rgba(124, 77, 255, 0.1)
+        );
+        border-bottom: 1px solid rgba(255, 118, 191, 0.22);
+        font: 1000 11px/1 var(--pixel);
+        letter-spacing: 0.8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ticket .tBody {
+        padding: 12px 12px 12px;
+        font: 900 11px/1.55 var(--pixel);
+      }
+      .ticket .tBody b {
+        color: #b1005a;
+      }
+      .ticket .tear {
+        height: 16px;
+        background: radial-gradient(
+            circle at 8px 0px,
+            transparent 8px,
+            rgba(255, 118, 191, 0.18) 9px
+          )
+          repeat-x;
+        background-size: 16px 16px;
+        opacity: 0.8;
+      }
+
+      .ticket.pop {
+        animation: ticketPop 1.15s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+      }
+      @keyframes ticketPop {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(30px) rotateX(45deg);
+        }
+        40% {
+          opacity: 1;
+          transform: translateX(-50%) translateY(-10px) rotateX(12deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0px) rotateX(0deg);
+        }
+      }
+
+      /* right side info panel */
+      .sideCard {
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 2px solid rgba(255, 118, 191, 0.28);
+        box-shadow: var(--shadow2);
+        overflow: hidden;
+      }
+      .sideHead {
+        padding: 12px 14px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 143, 0.14),
+          rgba(124, 77, 255, 0.08)
+        );
+        border-bottom: 1px solid rgba(255, 118, 191, 0.22);
+        font: 1000 12px/1 var(--pixel);
+        letter-spacing: 0.6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .sideBody {
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .copyBtn {
+        width: 100%;
+        border-radius: 18px;
+        padding: 12px 12px;
+        cursor: pointer;
+        border: 2px solid rgba(255, 118, 191, 0.22);
+        background: rgba(255, 255, 255, 0.7);
+        font: 1000 12px/1 var(--pixel);
+        box-shadow: 0 12px 18px rgba(0, 0, 0, 0.07);
+        user-select: none;
+      }
+      .copyBtn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+    </style>
+  </head>
+
+  <body class="sparkles">
+    <div class="wrap">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>Gen 08z — Allyz Arcade</h1>
+            <small
+              >khusus Allyz kelahiran 2008 • fandom <b>Alpha Drive One</b> • OT8
+            </small>
+          </div>
+        </div>
+
+        <div class="nav" role="navigation" aria-label="Menu">
+          <button class="btn ghost" data-go="home">Home</button>
+          <button class="btn" data-go="about">About</button>
+          <button class="btn" data-go="join">Join</button>
+          <button class="btn" data-go="dress">Dress-up</button>
+          <button class="btn primary" data-go="gacha">Gacha Street</button>
+          <button class="btn" data-go="rules">Rules</button>
+        </div>
+      </header>
+
+      <main class="screen" aria-live="polite">
+        <div class="screenHeader">
+          <h2 id="screenTitle">TITLE SCREEN</h2>
+          <div class="hud">
+            <div class="meter">
+              <span>HP</span> <span id="hpHearts">♥♥♥</span>
+            </div>
+            <div class="meter">
+              <span>COIN</span> <span id="coinCount">5</span>
+            </div>
+            <button class="btn small" id="muteBtn" aria-pressed="false">
+              SFX: ON
+            </button>
+          </div>
+        </div>
+
+        <div class="content">
+          <!-- HOME -->
+          <section class="view active" id="view-home">
+            <div class="grid2">
+              <div class="card">
+                <div class="inner">
+                  <p class="sub">WELCOME, PLAYER 08L ✨</p>
+                  <div class="bigTitle">Gen 08z<br />is your cozy home.</div>
+                  <p
+                    style="
+                      margin: 0;
+                      font-weight: 900;
+                      opacity: 0.9;
+                      line-height: 1.65;
+                    "
+                  >
+                    Web ini untuk memperkenalkan squad <b>Gen 08z</b> — khusus
+                    <b>Allyz kelahiran 2008</b> dan <b>OT8</b>. Di sini kita
+                    ngobrol, ketawa, bahas ALD1 bareng, dan saling jaga biar
+                    tetap nyaman.
+                  </p>
+
+                  <div class="tagrow">
+                    <div class="tag">ALLYZ 2008 ONLY</div>
+                    <div class="tag">OT8</div>
+                    <div class="tag">NO JUDGE ZONE</div>
+                    <div class="tag">ZONA AMAN</div>
+                  </div>
+
+                  <div class="dialog">
+                    <b>NPC:</b> “Main dulu di <b>GACHA</b>. Kalo kamu play,
+                    nanti keluar kertas info GC 08z.” 😼
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="inner" style="display: grid; gap: 10px">
+                  <button class="btn primary" data-go="gacha">
+                    ▶ START: GACHA IPHONE 17 PRO MAX
+                  </button>
+                  <button class="btn" data-go="join">
+                    📨 JOIN: cara daftar
+                  </button>
+                  <button class="btn" data-go="dress">
+                    🎀 DRESS-UP: desain karakter kamu yuk!
+                  </button>
+                  <button class="btn" data-go="rules">
+                    ❤ RULES: WAJIB BACA
+                  </button>
+
+                  <div class="dialog">
+                    <b>Admin contact:</b> X <b>@zhouanxino</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ABOUT -->
+          <section class="view" id="view-about">
+            <div class="grid2">
+              <div class="card">
+                <div class="inner">
+                  <h3 style="margin: 0 0 8px">Apa itu Gen 08z?</h3>
+                  <p
+                    style="
+                      margin: 0;
+                      font-weight: 700;
+                      opacity: 0.92;
+                      line-height: 1.7;
+                    "
+                  >
+                    Gen 08z adalah tempat berkumpulnya teman-teman
+                    <b>Allyz kelahiran 2008</b>. Grub ini cocok buat kamu yang
+                    suka ngobrol santai, bahas hal random, fangirling /
+                    fanboying, curhat tengah malem, atau ketawa bareng. Allyz
+                    Gen 08z itu ga ada kacang-kacangan! kita saling respon,
+                    saling dengerin dan saling ngejaga vibes biar tetap nyaman
+                    buat semua orang.
+                  </p>
+                  <div class="dialog">
+                    <b>Tujuan:</b> Bikin tempat yang rasanya aman dan nyenengin
+                    buat jadi diri sendiri. Kita ga cari yang paling rame, tapi
+                    yang mau saling menghargai. Kalau kamu lahir 2008 dan lagi
+                    nyari grup yang ga ribet tapi berasa hangat, mungkin Gen 08z
+                    ini tempatnya. Welcome to Allyz Gen 08z !
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="inner">
+                  <h3 style="margin: 0 0 8px">Yang bakal kamu temuin</h3>
+                  <ul
+                    style="
+                      margin: 0;
+                      padding-left: 18px;
+                      font-weight: 1000;
+                      line-height: 1.75;
+                    "
+                  >
+                    <li>mini games (mafia, uno, roblox, dsb.)</li>
+                    <li>project lucu (jedag jedug, edit lucu, dsb.)</li>
+                    <li>safe zone: chat group bukan untuk konten publik</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- JOIN -->
+          <section class="view" id="view-join">
+            <div class="reveal">
+              <div class="revealHeader">
+                <b>📨 CARA JOIN GEN 08z</b>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                  <button class="btn small" id="copyJoinMsgBtn">COPY DM</button>
+                  <button class="btn small" id="copyIntroBtn">
+                    COPY INTRO
+                  </button>
+                </div>
+              </div>
+              <div class="revealBody">
+                <div class="mini">
+                  <b>STEP:</b><br />
+                  1) Kamu Allyz <b>kelahiran 2008</b> + tim <b>OT8</b>.<br />
+                  2) Chat atau tag admin di X: <b>@zhouanxino</b> atau
+                  <b>@leowsgcl</b>. <br />
+                  3) Setelah di-add, langsung intro yaa by.<br />
+                  4) Done. Selamat jadi warga Gen 08z 🤍
+                </div>
+                <div class="linkRow">
+                  <a
+                    class="a"
+                    href="https://x.com/zhouanxino"
+                    target="_blank"
+                    rel="noopener"
+                    >Open X: @zhouanxino</a
+                  >
+                </div>
+                <div class="mini">
+                  <b
+                    >Intro template kalo kamu bingung cara intro gimana
+                    hng...</b
+                  ><br />
+                  Nama panggilan:<br />
+                  Bias:
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DRESS-UP -->
+          <!-- DRESS-UP -->
+          <section class="view" id="view-dress">
+            <div class="dressWrap">
+              <div class="dressPanel">
+                <div class="head">🎀 DRESS-UP ARCADE</div>
+                <div class="body">
+                  <div class="mini">
+                    Pilih item di lemari kiri → Bisa juga drag ke karakter.
+                  </div>
+
+                  <div class="formRow">
+                    <label class="field">
+                      <span>NAME</span>
+                      <input
+                        id="charName"
+                        placeholder="misal: Jeje"
+                        maxlength="16"
+                      />
+                    </label>
+
+                    <label class="field">
+                      <span>MBTI</span>
+                      <select id="charMBTI">
+                        <option>INFP</option>
+                        <option>INFJ</option>
+                        <option>INTP</option>
+                        <option>INTJ</option>
+                        <option>ISFP</option>
+                        <option>ISFJ</option>
+                        <option>ISTP</option>
+                        <option>ISTJ</option>
+                        <option>ENFP</option>
+                        <option>ENFJ</option>
+                        <option>ENTP</option>
+                        <option>ENTJ</option>
+                        <option>ESFP</option>
+                        <option>ESFJ</option>
+                        <option>ESTP</option>
+                        <option>ESTJ</option>
+                      </select>
+                    </label>
+
+                    <!-- NOTE: ini tetap ada biar struktur page ga berubah.
+                         Tapi di paper-doll image version, gender/skin gak dipakai. -->
+                    <label class="field">
+                      <span>GENDER</span>
+                      <select id="charGender">
+                        <option value="girl">Girl</option>
+                        <option value="boy">Boy</option>
+                      </select>
+                    </label>
+
+                    <label class="field">
+                      <span>SKIN</span>
+                      <select id="charSkin">
+                        <option value="1">Light</option>
+                        <option value="2">Warm</option>
+                        <option value="3">Tan</option>
+                        <option value="4">Deep</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <div class="dressGameScene">
+                    <!-- LEFT: WARDROBE -->
+                    <div class="closetWrap">
+                      <div class="closetTitle">💗 WARDROBE</div>
+
+                      <div class="closet">
+                        <div class="closetDoor left"></div>
+                        <div class="closetDoor right"></div>
+
+                        <div class="closetInner">
+                          <div class="shelfLabel">HAIR BACK</div>
+                          <div class="shelfGrid" id="shelfHairBack"></div>
+
+                          <div class="divider"></div>
+
+                          <div class="shelfLabel">HAIR FRONT</div>
+                          <div class="shelfGrid" id="shelfHairFront"></div>
+
+                          <div class="divider"></div>
+
+                          <div class="shelfLabel">CLOTH (SET)</div>
+                          <div class="shelfGrid" id="shelfCloth"></div>
+
+                          <div class="divider"></div>
+
+                          <div class="shelfLabel">SHOES</div>
+                          <div class="shelfGrid" id="shelfShoes"></div>
+
+                          <div class="divider"></div>
+
+                          <div class="shelfLabel">EYES</div>
+                          <div class="shelfGrid" id="shelfEyes"></div>
+
+                          <div class="divider"></div>
+
+                          <div class="shelfLabel">MOUTH</div>
+                          <div class="shelfGrid" id="shelfMouth"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- RIGHT: DOLL -->
+                    <div class="dollArea" id="dollDropZone">
+                      <div class="badge" id="badgeName">NAME: -</div>
+                      <div class="badge right" id="badgeMBTI">MBTI: INFP</div>
+
+                      <div class="dollStage2">
+                        <div class="dollPlatform"></div>
+                        <div class="dollFrame2">
+                          <div class="dollStack" id="dollStack">
+                            <!-- layer order:
+                                 body
+                                 hair/back
+                                 cloth
+                                 shoe
+                                 eyes
+                                 mouth
+                                 hair/front -->
+                            <img id="layerBody" alt="body" />
+                            <img id="layerHairBack" alt="hair back" />
+                            <img id="layerCloth" alt="cloth" />
+                            <img id="layerShoe" alt="shoe" />
+                            <img id="layerEyes" alt="eyes" />
+                            <img id="layerMouth" alt="mouth" />
+                            <img id="layerHairFront" alt="hair front" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="dropHint">
+                        🎮 Drag item dari lemari ke karakter, atau klik itemnya.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="actionRow">
+                    <button class="btn primary" id="copyDressCardBtn">
+                      COPY
+                    </button>
+                    <button class="btn" id="randomizeDressBtn">
+                      RANDOMIZE
+                    </button>
+                    <button class="btn" id="cameraBtn">CAMERA</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dressPanel">
+                <div class="head">🧾 PREVIEW</div>
+                <div class="body">
+                  <div class="mini" id="dressPreviewText">
+                    Tekan COPY CHARACTER CARD untuk nyalin.
+                  </div>
+                  <div class="mini">
+                    Outfit = Bisa di download iaa PNG lewat tombol CAMERA.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- GACHA STREET (3D CLAW + TICKET) -->
+          <section class="view" id="view-gacha">
+            <div class="streetWrap">
+              <div class="arcade3d">
+                <div class="arcadeTopMarquee">
+                  <span class="marqueeSmall">ONLY GOOD THINGS TO COME!</span>
+                  <div class="marqueeTitle">GEN 08L • GACHA STREET</div>
+                </div>
+
+                <div class="mascotRow">
+                  <div class="mascots" id="mascots"></div>
+                </div>
+
+                <div class="machine3d">
+                  <div class="machineGlass3d">
+                    <div class="rail3d"></div>
+
+                    <div class="glassFrame">
+                      <div class="glassShine"></div>
+
+                      <div class="capsules" id="capsules"></div>
+
+                      <div class="clawRig3d" id="clawRig3d" aria-hidden="true">
+                        <div class="clawHead3d" id="clawHead3d">
+                          <div class="rope3d" id="rope3d"></div>
+                          <div class="claw3d">
+                            <div class="hub"></div>
+                            <div class="arm a1"></div>
+                            <div class="arm a2"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ticketBay" aria-hidden="true">
+                      <div class="ticket" id="ticket">
+                        <div class="tHead">
+                          <span>GC INFO TICKET</span>
+                          <span id="ticketCode">#08L-????</span>
+                        </div>
+                        <div class="tear"></div>
+                        <div class="tBody" id="ticketBody">...</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel3d">
+                    <div class="panelGrid">
+                      <div class="panelBox">
+                        <div
+                          style="
+                            font: 1000 11px/1 var(--pixel);
+                            letter-spacing: 0.6px;
+                            opacity: 0.85;
+                          "
+                        >
+                          PRIZES
+                        </div>
+                        <div class="slot" id="prizeScreen">
+                          READY…<br />Tekan <b>LET’S PLAY</b> untuk mulai.
+                        </div>
+                        <div class="btnRow3">
+                          <div class="circleBtn" id="btn1">1</div>
+                          <div class="circleBtn" id="btn2">2</div>
+                          <div class="circleBtn pink" id="btn3">3</div>
+                        </div>
+                      </div>
+
+                      <div class="panelBox">
+                        <div class="joystick3d">
+                          <div
+                            style="
+                              font: 1000 11px/1 var(--pixel);
+                              letter-spacing: 0.6px;
+                              opacity: 0.85;
+                            "
+                          >
+                            CONTROL
+                          </div>
+                          <div class="stickBase" aria-hidden="true">
+                            <div class="stick"></div>
+                            <div class="knob"></div>
+                          </div>
+                          <div
+                            style="
+                              font: 900 11px/1.4 var(--pixel);
+                              opacity: 0.85;
+                              text-align: center;
+                            "
+                          >
+                            (joystick pajangan 😭)<br />tapi animasi claw
+                            beneran jalan
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="panelBox">
+                        <div class="coinSide">
+                          <div class="slot" id="lcdStreet">
+                            COIN: <b><span id="coinInline">5</span></b
+                            ><br />
+                            STATUS: <span id="streetStatus">IDLE</span>
+                          </div>
+                          <button class="playBtn" id="playBtn">
+                            LET’S PLAY
+                          </button>
+                          <button class="btn" id="farmCoinBtn">
+                            FARM +3 COIN
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sideCard">
+                <div class="sideHead">
+                  <span>📎 HASIL TICKET</span>
+                  <span style="opacity: 0.8">copyable</span>
+                </div>
+                <div class="sideBody">
+                  <div class="mini" id="ticketTextBox">
+                    Tekan <b>LET’S PLAY</b> dulu. Nanti keluar kertas info GC.
+                  </div>
+                  <button class="copyBtn" id="copyTicketBtn" disabled>
+                    COPY TICKET TEXT
+                  </button>
+
+                  <div class="mini">
+                    <b>Admin:</b> X <b>@zhouanxino</b><br />
+                    Setelah ngerti info GC, lanjut ke menu <b>Join</b> buat
+                    daftar.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RULES (simple) -->
+          <section class="view" id="view-rules">
+            <div class="card">
+              <div class="inner">
+                <h3 style="margin: 0 0 8px">Rules Gen 08z</h3>
+                <div class="mini">
+                  1) Wajib intro setelah masuk.<br />
+                  2) Khusus Allyz kelahiran 2008.<br />
+                  3) OT8 only (no solo war / fanwar).<br />
+                  4) No konten 18+ / gore / hal tak pantas.<br />
+                  5) Jangan sebar chat grup ke luar tanpa izin.<br />
+                  6) PENYUSUP / MATA-MATA dilarang masuk<br />
+                  7) Jika terdapat masalah: hubungi admin, jangan ribut di
+                  publik.<br />
+                  8) Jangan kacang ya by kita ini keluarga kecil yang saling
+                  jaga
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <div class="footer">
+        <div>Made for <b>Gen 08z</b></div>
+        <div>
+          Admin X: <code>@zhouanxino</code> <code>@dongyunfib</code>
+          <code>@leowsgcl</code> <code>@gadisabin</code>
+          <code>@chewysoobinz</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">COPIED!</div>
+
+    <script>
+      // =========================
+      // STATE
+      // =========================
+      const state = {
+        view: "home",
+        coins: 5,
+        hp: 3,
+        muted: false,
+
+        // gacha street
+        streetBusy: false,
+        lastTicketText: "",
+        lastPrizeName: "",
+      };
+
+      // =========================
+      // HELPERS
+      // =========================
+      const $ = (q) => document.querySelector(q);
+      const $$ = (q) => Array.from(document.querySelectorAll(q));
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+      const screenTitle = $("#screenTitle");
+      const coinCount = $("#coinCount");
+      const hpHearts = $("#hpHearts");
+      const muteBtn = $("#muteBtn");
+      const toast = $("#toast");
+
+      function setTitle(t) {
+        screenTitle.textContent = t;
+      }
+      function renderHUD() {
+        coinCount.textContent = state.coins;
+        hpHearts.textContent =
+          "♥".repeat(state.hp) + "♡".repeat(Math.max(0, 5 - state.hp));
+        const coinInline = $("#coinInline");
+        if (coinInline) coinInline.textContent = state.coins;
+      }
+      function toastMsg(msg = "OK!") {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 900);
+      }
+
+      // =========================
+      // SFX (no external files)
+      // =========================
+      let audioCtx = null;
+      function beep(freq = 440, dur = 0.07, type = "square", vol = 0.03) {
+        if (state.muted) return;
+        try {
+          if (!audioCtx)
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.type = type;
+          o.frequency.value = freq;
+          g.gain.value = vol;
+          o.connect(g);
+          g.connect(audioCtx.destination);
+          o.start();
+          o.stop(audioCtx.currentTime + dur);
+        } catch (e) {}
+      }
+      function sfxClick() {
+        beep(660, 0.05, "square", 0.03);
+      }
+      function sfxGood() {
+        beep(880, 0.06, "triangle", 0.04);
+        setTimeout(() => beep(1180, 0.05, "triangle", 0.03), 70);
+      }
+      function sfxBad() {
+        beep(220, 0.08, "sawtooth", 0.03);
+      }
+      function sfxCoin() {
+        beep(1046, 0.04, "square", 0.03);
+        setTimeout(() => beep(1318, 0.04, "square", 0.02), 50);
+      }
+      function sfxGrab() {
+        beep(392, 0.06, "square", 0.03);
+        setTimeout(() => beep(294, 0.06, "square", 0.02), 70);
+      }
+
+      muteBtn.addEventListener("click", () => {
+        state.muted = !state.muted;
+        muteBtn.textContent = state.muted ? "SFX: OFF" : "SFX: ON";
+        muteBtn.setAttribute("aria-pressed", String(!state.muted));
+        (state.muted ? sfxBad : sfxGood)();
+      });
+
+      // =========================
+      // NAV
+      // =========================
+      function go(view) {
+        state.view = view;
+        $$(".view").forEach((v) => v.classList.remove("active"));
+        $("#view-" + view).classList.add("active");
+
+        const titleMap = {
+          home: "TITLE SCREEN",
+          about: "ABOUT",
+          join: "JOIN",
+          dress: "DRESS-UP",
+          gacha: "GACHA STREET 3D",
+          rules: "RULES",
+        };
+        setTitle(titleMap[view] || "GEN 08L");
+        sfxClick();
+        renderHUD();
+      }
+      $$(".btn[data-go]").forEach((b) => {
+        b.addEventListener("click", () => go(b.dataset.go));
+      });
+
+      // =========================
+      // COPY JOIN + INTRO
+      // =========================
+      const introTemplate = `Nama panggilan:
+Kelahiran: 2008
+Domisili:
+Bias / line favorit:
+Lagu yang paling sering diputer:
+Tipe di grup: (aktif / ngintip / meme dropper / pendengar)
+Fakta random:`;
+
+      const dmText = `Hai admin @zhouanxino! Aku Allyz kelahiran 2008 dan OT8. Aku mau join Gen 08L ya 🤍
+Ini intro singkat:
+Nama panggilan:
+Domisili:
+Bias/line favorit:`;
+
+      $("#copyIntroBtn").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(introTemplate);
+          toastMsg("INTRO COPIED!");
+          sfxGood();
+        } catch {
+          toastMsg("COPY FAILED :(");
+          sfxBad();
+        }
+      });
+      $("#copyJoinMsgBtn").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(dmText);
+          toastMsg("DM COPIED!");
+          sfxGood();
+        } catch {
+          toastMsg("COPY FAILED :(");
+          sfxBad();
+        }
+      });
+
+      // =========================
+      // DRESS-UP (PAPER DOLL - IMAGE LAYERS)
+      // =========================
+      const dressPreviewText = $("#dressPreviewText");
+      const badgeName = $("#badgeName");
+      const badgeMBTI = $("#badgeMBTI");
+
+      const charName = $("#charName");
+      const charMBTI = $("#charMBTI");
+      const charGender = $("#charGender"); // tetap ada, tapi tidak dipakai
+      const charSkin = $("#charSkin"); // tetap ada, tapi tidak dipakai
+
+      const shelfHairBack = $("#shelfHairBack");
+      const shelfHairFront = $("#shelfHairFront");
+      const shelfCloth = $("#shelfCloth");
+      const shelfShoes = $("#shelfShoes");
+      const shelfEyes = $("#shelfEyes");
+      const shelfMouth = $("#shelfMouth");
+
+      const dollDropZone = $("#dollDropZone");
+
+      // layer img elements
+      const layerBody = $("#layerBody");
+      const layerHairBack = $("#layerHairBack");
+      const layerHairFront = $("#layerHairFront");
+      const layerCloth = $("#layerCloth");
+      const layerShoe = $("#layerShoe");
+      const layerEyes = $("#layerEyes");
+      const layerMouth = $("#layerMouth");
+
+      // === Asset config sesuai folder kamu ===
+      const ASSET = {
+        body: "assets/base/body.png",
+        hairBack: { dir: "assets/hair/back", count: 14 },
+        hairFront: { dir: "assets/hair/front", count: 15 },
+        cloth: { dir: "assets/cloth", count: 11 },
+        shoes: { dir: "assets/shoe", count: 11 },
+        eyes: { dir: "assets/eyes", count: 17 },
+        mouth: { dir: "assets/mouth", count: 18 },
+      };
+
+      // state dress (angka = nomor file png)
+      const dress = {
+        name: "",
+        mbti: "INFP",
+        // gender/skin disimpan supaya form tetap jalan, tapi tidak mempengaruhi layer
+        gender: "girl",
+        skin: 1,
+
+        hairBack: 1,
+        hairFront: 1,
+        cloth: 1,
+        shoes: 1,
+        eyes: 1,
+        mouth: 1,
+      };
+
+      function imgPath(dir, n) {
+        return `${dir}/${n}.png`;
+      }
+
+      function setLayer(imgEl, src) {
+        imgEl.src = src;
+      }
+
+      function renderCharacter() {
+        badgeName.textContent =
+          "NAME: " + ((dress.name || "").trim() ? dress.name.trim() : "-");
+        badgeMBTI.textContent = "MBTI: " + dress.mbti;
+
+        // order layer sudah fixed di HTML (stack)
+        setLayer(layerBody, ASSET.body);
+        setLayer(layerHairBack, imgPath(ASSET.hairBack.dir, dress.hairBack));
+        setLayer(layerCloth, imgPath(ASSET.cloth.dir, dress.cloth));
+        setLayer(layerShoe, imgPath(ASSET.shoes.dir, dress.shoes));
+        setLayer(layerEyes, imgPath(ASSET.eyes.dir, dress.eyes));
+        setLayer(layerMouth, imgPath(ASSET.mouth.dir, dress.mouth));
+        setLayer(layerHairFront, imgPath(ASSET.hairFront.dir, dress.hairFront));
+
+        dressPreviewText.textContent = `Name: ${
+          (dress.name || "").trim() || "-"
+        } | MBTI: ${dress.mbti}
+Pick:
+- Hair Back: ${dress.hairBack}
+- Hair Front: ${dress.hairFront}
+- Cloth: ${dress.cloth}
+- Shoes: ${dress.shoes}
+- Eyes: ${dress.eyes}
+- Mouth: ${dress.mouth}`;
+      }
+
+      function makeItemThumb({ type, n, src, selected }) {
+        const el = document.createElement("div");
+        el.className = "item" + (selected ? " on" : "");
+        el.draggable = true;
+        el.dataset.type = type;
+        el.dataset.n = String(n);
+
+        el.innerHTML = `
+          <div class="icon">
+            ${
+              src
+                ? `<img src="${src}" alt="${type} ${n}">`
+                : `<div class="noimg">NONE</div>`
+            }
+          </div>
+          <div class="name">${n === 0 ? "None" : "#" + n}</div>
+        `;
+
+        el.addEventListener("click", () => {
+          applyItem(type, n);
+          sfxGood();
+        });
+
+        el.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", JSON.stringify({ type, n }));
+          sfxClick();
+        });
+
+        return el;
+      }
+
+      function renderShelf(host, type, dir, count, currentValue) {
+        host.innerHTML = "";
+
+        // (opsional) tambah NONE untuk hairBack/hairFront kalau kamu mau bisa botak
+        // sekarang: aku tidak pakai NONE biar selalu ada rambut.
+        for (let n = 1; n <= count; n++) {
+          const src = imgPath(dir, n);
+          host.appendChild(
+            makeItemThumb({
+              type,
+              n,
+              src,
+              selected: currentValue === n,
+            })
+          );
+        }
+      }
+
+      function applyItem(type, n) {
+        if (type === "hairBack") dress.hairBack = n;
+        if (type === "hairFront") dress.hairFront = n;
+        if (type === "cloth") dress.cloth = n;
+        if (type === "shoes") dress.shoes = n;
+        if (type === "eyes") dress.eyes = n;
+        if (type === "mouth") dress.mouth = n;
+
+        renderAll();
+      }
+
+      function renderAll() {
+        renderShelf(
+          shelfHairBack,
+          "hairBack",
+          ASSET.hairBack.dir,
+          ASSET.hairBack.count,
+          dress.hairBack
+        );
+        renderShelf(
+          shelfHairFront,
+          "hairFront",
+          ASSET.hairFront.dir,
+          ASSET.hairFront.count,
+          dress.hairFront
+        );
+        renderShelf(
+          shelfCloth,
+          "cloth",
+          ASSET.cloth.dir,
+          ASSET.cloth.count,
+          dress.cloth
+        );
+        renderShelf(
+          shelfShoes,
+          "shoes",
+          ASSET.shoes.dir,
+          ASSET.shoes.count,
+          dress.shoes
+        );
+        renderShelf(
+          shelfEyes,
+          "eyes",
+          ASSET.eyes.dir,
+          ASSET.eyes.count,
+          dress.eyes
+        );
+        renderShelf(
+          shelfMouth,
+          "mouth",
+          ASSET.mouth.dir,
+          ASSET.mouth.count,
+          dress.mouth
+        );
+
+        renderCharacter();
+      }
+
+      function bindForm() {
+        charName.addEventListener("input", () => {
+          dress.name = charName.value;
+          renderCharacter();
+        });
+        charMBTI.addEventListener("change", () => {
+          dress.mbti = charMBTI.value;
+          sfxClick();
+          renderCharacter();
+        });
+
+        // tetap disimpan, walau tidak mempengaruhi layer
+        charGender.addEventListener("change", () => {
+          dress.gender = charGender.value;
+          sfxClick();
+          renderCharacter();
+        });
+        charSkin.addEventListener("change", () => {
+          dress.skin = Number(charSkin.value);
+          sfxClick();
+          renderCharacter();
+        });
+      }
+
+      function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function applyRandom() {
+        dress.name = dress.name || "Player";
+        const mbtis = [
+          "INFP",
+          "INFJ",
+          "INTP",
+          "INTJ",
+          "ISFP",
+          "ISFJ",
+          "ISTP",
+          "ISTJ",
+          "ENFP",
+          "ENFJ",
+          "ENTP",
+          "ENTJ",
+          "ESFP",
+          "ESFJ",
+          "ESTP",
+          "ESTJ",
+        ];
+        dress.mbti = mbtis[Math.floor(Math.random() * mbtis.length)];
+
+        dress.hairBack = randInt(1, ASSET.hairBack.count);
+        dress.hairFront = randInt(1, ASSET.hairFront.count);
+        dress.cloth = randInt(1, ASSET.cloth.count);
+        dress.shoes = randInt(1, ASSET.shoes.count);
+        dress.eyes = randInt(1, ASSET.eyes.count);
+        dress.mouth = randInt(1, ASSET.mouth.count);
+
+        charName.value = dress.name;
+        charMBTI.value = dress.mbti;
+
+        sfxGood();
+        renderAll();
+      }
+
+      // drag-drop to doll
+      dollDropZone.addEventListener("dragover", (e) => e.preventDefault());
+      dollDropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        try {
+          const raw = e.dataTransfer.getData("text/plain");
+          const data = JSON.parse(raw);
+          applyItem(data.type, Number(data.n));
+          sfxGood();
+        } catch {
+          sfxBad();
+        }
+      });
+
+      $("#randomizeDressBtn").addEventListener("click", applyRandom);
+
+      // copy character card
+      $("#copyDressCardBtn").addEventListener("click", async () => {
+        const txt = `[GEN 08L — CHARACTER CARD]
+Name: ${(dress.name || "").trim() || "-"}
+MBTI: ${dress.mbti}
+
+Outfit (PNG layers):
+- Hair Back: ${dress.hairBack}
+- Hair Front: ${dress.hairFront}
+- Cloth: ${dress.cloth}
+- Shoes: ${dress.shoes}
+- Eyes: ${dress.eyes}
+- Mouth: ${dress.mouth}`;
+
+        try {
+          await navigator.clipboard.writeText(txt);
+          toastMsg("CHAR CARD COPIED!");
+          sfxGood();
+        } catch {
+          toastMsg("COPY FAILED :(");
+          sfxBad();
+        }
+      });
+
+      // camera export (composite PNG dari layer images)
+      async function loadImage(src) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = src;
+        });
+      }
+
+      $("#cameraBtn").addEventListener("click", async () => {
+        try {
+          // load body first to get size
+          const bodyImg = await loadImage(ASSET.body);
+
+          const W = bodyImg.naturalWidth || 512;
+          const H = bodyImg.naturalHeight || 512;
+
+          const layers = [
+            ASSET.body,
+            imgPath(ASSET.hairBack.dir, dress.hairBack),
+            imgPath(ASSET.cloth.dir, dress.cloth),
+            imgPath(ASSET.shoes.dir, dress.shoes),
+            imgPath(ASSET.eyes.dir, dress.eyes),
+            imgPath(ASSET.mouth.dir, dress.mouth),
+            imgPath(ASSET.hairFront.dir, dress.hairFront),
+          ];
+
+          const loaded = [];
+          for (const src of layers) loaded.push(await loadImage(src));
+
+          const canvas = document.createElement("canvas");
+          canvas.width = 700;
+          canvas.height = 900;
+          const ctx = canvas.getContext("2d");
+
+          // bg
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          const grad = ctx.createLinearGradient(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+          grad.addColorStop(0, "rgba(255,120,200,.35)");
+          grad.addColorStop(1, "rgba(124,77,255,.18)");
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // draw layers centered, scaled
+          const drawW = 460;
+          const drawH = (H / W) * drawW;
+          const x = (canvas.width - drawW) / 2;
+          const y = 80;
+
+          for (const img of loaded) {
+            ctx.drawImage(img, x, y, drawW, drawH);
+          }
+
+          // label
+          ctx.fillStyle = "rgba(255,255,255,.85)";
+          ctx.fillRect(60, 820, 580, 60);
+          ctx.fillStyle = "#1b1220";
+          ctx.font = "bold 22px ui-monospace, monospace";
+          ctx.fillText(
+            `NAME: ${(dress.name || "").trim() || "-"}  |  MBTI: ${dress.mbti}`,
+            80,
+            860
+          );
+
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.download = "gen08l_character.png";
+          a.click();
+
+          toastMsg("SAVED PNG!");
+          sfxGood();
+        } catch (e) {
+          toastMsg("EXPORT FAILED");
+          sfxBad();
+        }
+      });
+
+      bindForm();
+      renderAll();
+
+      // =========================
+      // GACHA STREET 3D
+      // =========================
+      const mascots = $("#mascots");
+      const capsules = $("#capsules");
+      const clawRig3d = $("#clawRig3d");
+      const clawHead3d = $("#clawHead3d");
+      const playBtn = $("#playBtn");
+      const streetStatus = $("#streetStatus");
+      const lcdStreet = $("#lcdStreet");
+      const prizeScreen = $("#prizeScreen");
+
+      const ticket = $("#ticket");
+      const ticketBody = $("#ticketBody");
+      const ticketCode = $("#ticketCode");
+      const ticketTextBox = $("#ticketTextBox");
+      const copyTicketBtn = $("#copyTicketBtn");
+
+      // Original mascots (cute + simple, not brand)
+      const mascotSVG = (type) => {
+        // little blob animals
+        const palette = {
+          cat: ["#ffffff", "#ff86c8", "#2b1b24"],
+          frog: ["#b7ff4a", "#2ef2c3", "#2b1b24"],
+          pup: ["#fff3c6", "#ffb3d9", "#2b1b24"],
+          bird: ["#d6f3ff", "#7c4dff", "#2b1b24"],
+          bunny: ["#ffffff", "#ffd6ec", "#2b1b24"],
+          star: ["#fff3c6", "#ff2d8f", "#2b1b24"],
+          devil: ["#ffd6ec", "#7c4dff", "#2b1b24"],
+          cloud: ["#ffffff", "#d6f3ff", "#2b1b24"],
+        }[type];
+
+        return `
+      <svg viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="${palette[0]}"/>
+            <stop offset="1" stop-color="${palette[1]}"/>
+          </linearGradient>
+        </defs>
+        <rect width="120" height="110" rx="24" fill="url(#g)"/>
+        <circle cx="60" cy="60" r="34" fill="rgba(255,255,255,.72)" />
+        <circle cx="48" cy="58" r="5" fill="${palette[2]}" opacity=".75"/>
+        <circle cx="72" cy="58" r="5" fill="${palette[2]}" opacity=".75"/>
+        <rect x="54" y="70" width="12" height="8" rx="4" fill="rgba(255,120,180,.75)"/>
+        <path d="M48 78 Q60 88 72 78" stroke="rgba(0,0,0,.45)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        ${
+          type === "cat"
+            ? `<path d="M34 40 L46 52 L38 54 Z" fill="rgba(255,255,255,.65)"/><path d="M86 40 L74 52 L82 54 Z" fill="rgba(255,255,255,.65)"/>`
+            : ""
+        }
+        ${
+          type === "frog"
+            ? `<circle cx="40" cy="44" r="10" fill="rgba(255,255,255,.65)"/><circle cx="80" cy="44" r="10" fill="rgba(255,255,255,.65)"/><circle cx="40" cy="44" r="4" fill="${palette[2]}" opacity=".7"/><circle cx="80" cy="44" r="4" fill="${palette[2]}" opacity=".7"/>`
+            : ""
+        }
+        ${
+          type === "bunny"
+            ? `<rect x="44" y="20" width="10" height="22" rx="5" fill="rgba(255,255,255,.65)"/><rect x="66" y="20" width="10" height="22" rx="5" fill="rgba(255,255,255,.65)"/>`
+            : ""
+        }
+        ${
+          type === "devil"
+            ? `<path d="M34 34 Q44 20 52 34" stroke="rgba(0,0,0,.25)" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M86 34 Q76 20 68 34" stroke="rgba(0,0,0,.25)" stroke-width="6" fill="none" stroke-linecap="round"/>`
+            : ""
+        }
+        ${
+          type === "cloud"
+            ? `<circle cx="34" cy="52" r="14" fill="rgba(255,255,255,.65)"/><circle cx="86" cy="52" r="14" fill="rgba(255,255,255,.65)"/><circle cx="60" cy="44" r="18" fill="rgba(255,255,255,.65)"/>`
+            : ""
+        }
+      </svg>`;
+      };
+
+      const mascotTypes = [
+        "cat",
+        "frog",
+        "pup",
+        "bird",
+        "bunny",
+        "cloud",
+        "star",
+        "devil",
+        "pup",
+        "cat",
+      ];
+      mascots.innerHTML = mascotTypes
+        .map((t) => `<div class="m">${mascotSVG(t)}</div>`)
+        .join("");
+
+      function seedCapsules() {
+        const labels = [
+          ["JOIN PASS", "🎟️"],
+          ["ROLE CARD", "🎀"],
+          ["OT8 BADGE", "💿"],
+          ["EVENT MAP", "🗺️"],
+          ["SAFE ZONE", "🫧"],
+          ["MEME KEY", "🔑"],
+          ["MINI QUEST", "🍬"],
+          ["PLAYLIST", "🎧"],
+          ["WALLPAPER", "🖼️"],
+          ["GC INFO", "📄"],
+        ];
+        capsules.innerHTML = "";
+        for (let i = 0; i < 20; i++) {
+          const pick = labels[Math.floor(Math.random() * labels.length)];
+          const el = document.createElement("div");
+          el.className = "cap";
+          el.style.setProperty(
+            "--r",
+            `${Math.floor(Math.random() * 9) - 4}deg`
+          );
+          el.innerHTML = `<i>${pick[0]}</i><b>${pick[1]}</b>`;
+          capsules.appendChild(el);
+        }
+      }
+      seedCapsules();
+
+      function setClawX(percent) {
+        clawHead3d.style.transform = `translateX(-50%) translateX(${
+          (percent - 50) * 8
+        }px)`;
+      }
+
+      const PRIZE_POOL = [
+        { name: "GC INFO TICKET", icon: "📄", rarity: "SSR" },
+        { name: "JOIN PASS", icon: "🎟️", rarity: "SR" },
+        { name: "OT8 BADGE", icon: "💿", rarity: "SR" },
+        { name: "ROLE CARD BOOST", icon: "🎀", rarity: "R" },
+        { name: "EVENT MAP", icon: "🗺️", rarity: "R" },
+        { name: "SAFE ZONE CHARM", icon: "🫧", rarity: "N" },
+        { name: "MINI QUEST", icon: "🍬", rarity: "N" },
+        { name: "PLAYLIST DROP", icon: "🎧", rarity: "N" },
+      ];
+
+      function pickPrize() {
+        // weight: more common N, rarer SSR
+        const r = Math.random();
+        if (r < 0.12) return PRIZE_POOL[0]; // SSR
+        if (r < 0.32) return PRIZE_POOL[1 + Math.floor(Math.random() * 2)]; // SR
+        if (r < 0.62) return PRIZE_POOL[3 + Math.floor(Math.random() * 2)]; // R
+        return PRIZE_POOL[5 + Math.floor(Math.random() * 3)]; // N
+      }
+
+      function ticketTextFor(prize) {
+        // kertas harus berisi info GC, termasuk dibentuk 16 Juni 2025
+        // dibuat lucu + rapih
+        const lines = [
+          `[${prize.icon} ${prize.name}]`,
+          `Nama GC : Gen 08L`,
+          `Khusus : Allyz kelahiran 2008`,
+          `Mode   : OT8 (no solo war/fanwar)`,
+          `Dibentuk: 16 Juni 2025`,
+          ``,
+          `Isi GC:`,
+          `- ngobrol santai + fangirl bareng`,
+          `- mini games & project lucu`,
+          `- tempat “pulang” yang aman`,
+          ``,
+          `Reminder: chat grup bukan untuk disebar keluar.`,
+          `Admin X: @zhouanxino`,
+        ];
+        return lines.join("\n");
+      }
+
+      function renderTicket(prize) {
+        const code = `#08L-${Math.floor(1000 + Math.random() * 9000)}`;
+        ticketCode.textContent = code;
+
+        const txt = ticketTextFor(prize);
+        state.lastTicketText = txt + `\nCode: ${code}`;
+        state.lastPrizeName = `${prize.icon} ${prize.name}`;
+
+        ticketBody.innerHTML = `
+        <b>Gen 08L</b> — Info Ticket<br/>
+        <span style="opacity:.85">${code}</span><br/><br/>
+        <b>Dibentuk:</b> 16 Juni 2025<br/>
+        <b>Khusus:</b> Allyz 2008 • OT8<br/><br/>
+        <b>Isi GC:</b><br/>
+        • ngobrol santai + fangirl bareng<br/>
+        • mini games & project lucu<br/>
+        • safe zone (privacy dijaga)<br/><br/>
+        <b>Admin X:</b> @zhouanxino
+      `;
+
+        ticketTextBox.textContent = state.lastTicketText;
+        copyTicketBtn.disabled = false;
+      }
+
+      async function playStreet() {
+        if (state.streetBusy) return;
+
+        if (state.coins <= 0) {
+          toastMsg("NO COIN! FARM dulu");
+          sfxBad();
+          return;
+        }
+
+        // spend coin
+        state.streetBusy = true;
+        state.coins -= 1;
+        renderHUD();
+        sfxCoin();
+
+        // status
+        streetStatus.textContent = "RUNNING";
+        prizeScreen.innerHTML = `RUN…<br/>Claw sedang bergerak 😭`;
+        $(
+          "#lcdStreet"
+        ).innerHTML = `COIN: <b><span id="coinInline">${state.coins}</span></b><br/>STATUS: <span id="streetStatus">RUNNING</span>`;
+
+        // hide ticket
+        ticket.classList.remove("pop");
+        ticket.style.opacity = 0;
+
+        // move + drop + grab + rise
+        const target = 25 + Math.random() * 50;
+        setClawX(target);
+
+        clawRig3d.classList.remove("rising", "grab", "dropping");
+        void clawRig3d.offsetWidth;
+
+        clawRig3d.classList.add("dropping");
+        sfxGrab();
+        await wait(1100);
+
+        clawRig3d.classList.add("grab");
+        await wait(460);
+
+        clawRig3d.classList.remove("dropping");
+        clawRig3d.classList.add("rising");
+        await wait(1100);
+
+        const prize = pickPrize();
+
+        // show result on prize screen
+        prizeScreen.innerHTML = `YOU GOT:<br/><b>${prize.icon} ${prize.name}</b>`;
+        sfxGood();
+
+        // pop ticket (always, because you requested "kertas info gc")
+        renderTicket(prize);
+        ticket.style.opacity = 1;
+        ticket.classList.add("pop");
+
+        // finish
+        streetStatus.textContent = "IDLE";
+        $(
+          "#lcdStreet"
+        ).innerHTML = `COIN: <b><span id="coinInline">${state.coins}</span></b><br/>STATUS: <span id="streetStatus">IDLE</span>`;
+        state.streetBusy = false;
+      }
+
+      playBtn.addEventListener("click", playStreet);
+
+      // cosmetic buttons (1/2/3) - they change message only
+      $("#btn1").addEventListener("click", () => {
+        sfxClick();
+        prizeScreen.innerHTML = `MODE 1:<br/>“Mafia Sawit”`;
+      });
+      $("#btn2").addEventListener("click", () => {
+        sfxClick();
+        prizeScreen.innerHTML = `MODE 2:<br/>“Imoet Gemaz”`;
+      });
+      $("#btn3").addEventListener("click", () => {
+        sfxClick();
+        prizeScreen.innerHTML = `MODE 3:<br/>“Plenger”`;
+      });
+
+      // farm coin
+      $("#farmCoinBtn").addEventListener("click", () => {
+        state.coins += 3;
+        renderHUD();
+        toastMsg("+3 COIN!");
+        sfxGood();
+      });
+
+      // copy ticket
+      copyTicketBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(state.lastTicketText || "");
+          toastMsg("TICKET COPIED!");
+          sfxGood();
+        } catch {
+          toastMsg("COPY FAILED :(");
+          sfxBad();
+        }
+      });
+
+      // =========================
+      // INIT
+      // =========================
+      renderHUD();
+      setTitle("TITLE SCREEN");
+
+      // keyboard quick nav
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "1") go("home");
+        if (e.key === "2") go("gacha");
+        if (e.key === "3") go("join");
+        if (e.key === "4") go("dress");
+        if (e.key === "5") go("rules");
+      });
+    </script>
+  </body>
+</html>
